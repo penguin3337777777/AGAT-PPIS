@@ -77,7 +77,7 @@ def evaluate(model, data_loader):
                 node_features = Variable(node_features.cuda().float())
                 adj_matrix = Variable(adj_matrix.cuda())
                 G_batch.edata['ex'] = Variable(G_batch.edata['ex'].float())
-                G_batch = G_batch.to(torch.device('cuda:1'))
+                G_batch = G_batch.to(torch.device('cuda:0'))
                 y_true = Variable(labels.cuda())
 
             else:
