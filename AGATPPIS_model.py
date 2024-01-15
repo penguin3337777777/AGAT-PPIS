@@ -90,7 +90,7 @@ def cal_edges(sequence_name, radius=MAP_CUTOFF):  # to get the index of the edge
 def load_graph(sequence_name):
     dismap = np.load(Feature_Path + "distance_map_SC/" + sequence_name + ".npy")
     mask = ((dismap >= 0) * (dismap <= MAP_CUTOFF))
-    adjacency_matrix = mask.astype(np.int)
+    adjacency_matrix = mask.astype(np.int32)
     norm_matrix = normalize(adjacency_matrix.astype(np.float32))
     return norm_matrix
 
