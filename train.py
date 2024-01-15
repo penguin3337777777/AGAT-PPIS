@@ -6,6 +6,7 @@ import pandas as pd
 from torch.autograd import Variable
 from sklearn import metrics
 from sklearn.model_selection import KFold
+import wandb
 
 from AGATPPIS_model import *
 # import dgl
