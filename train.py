@@ -77,7 +77,7 @@ def evaluate(model, data_loader):
                 node_features = Variable(node_features.cuda().float())
                 adj_matrix = Variable(adj_matrix.cuda())
                 G_batch.edata['ex'] = Variable(G_batch.edata['ex'].float())
-                G_batch = G_batch.to(torch.device('cuda:0'))
+                G_batch = G_batch.to(torch.device('cuda:1'))
                 y_true = Variable(labels.cuda())
 
             else:
@@ -229,7 +229,7 @@ def cross_validation(all_dataframe, fold_number=5):
     valid_auprs = []
 
     for train_index, valid_index in kfold.split(sequence_names, sequence_labels):
-        wandb.init(project='AGAT', job_type=f'fold_{fold}')
+        wandb.init(project='AGAT', job_type=f'fold_{fold}', name=f'run_fold_{fold}')
         print("\n\n========== Fold " + str(fold + 1) + " ==========")
         train_dataframe = all_dataframe.iloc[train_index, :]
         valid_dataframe = all_dataframe.iloc[valid_index, :]
