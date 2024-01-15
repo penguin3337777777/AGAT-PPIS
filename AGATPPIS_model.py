@@ -82,7 +82,7 @@ def normalize(mx):
 def cal_edges(sequence_name, radius=MAP_CUTOFF):  # to get the index of the edges
     dist_matrix = np.load(Feature_Path + "distance_map_SC/" + sequence_name + ".npy")
     mask = ((dist_matrix >= 0) * (dist_matrix <= radius))
-    adjacency_matrix = mask.astype(np.int)
+    adjacency_matrix = mask.astype(np.int32)
     radius_index_list = np.where(adjacency_matrix == 1)
     radius_index_list = [list(nodes) for nodes in radius_index_list]
     return radius_index_list
