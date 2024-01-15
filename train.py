@@ -177,7 +177,19 @@ def train(model, train_dataframe, valid_dataframe, fold = 0):
         print("Valid AUC: ", result_valid['AUC'])
         print("Valid AUPRC: ", result_valid['AUPRC'])
         print("Valid mcc: ", result_valid['mcc'])
-
+        wandb.log({"Train loss": epoch_loss_train_avg,
+                   "Train binary acc": result_train['binary_acc'],
+                   "Train AUC": result_train['AUC'],
+                   "Train AUPRC": result_train['AUPRC'],
+                   "Valid loss": epoch_loss_valid_avg,
+                   "Valid binary acc": result_valid['binary_acc'],
+                   "Valid precision": result_valid['precision'],
+                   "Valid recall": result_valid['recall'],
+                   "Valid f1": result_valid['f1'],
+                   "Valid AUC": result_valid['AUC'],
+                   "Valid AUPRC": result_valid['AUPRC'],
+                   "Valid mcc": result_valid['mcc'],
+                   "Valid threshold": result_valid['threshold']})
         if best_val_aupr < result_valid['AUPRC']:
             best_epoch = epoch + 1
             best_val_auc = result_valid['AUC']
@@ -216,6 +228,7 @@ def cross_validation(all_dataframe, fold_number=5):
     valid_auprs = []
 
     for train_index, valid_index in kfold.split(sequence_names, sequence_labels):
+        wandb.init(project='AGAT', job_type=f'fold_{fold}')
         print("\n\n========== Fold " + str(fold + 1) + " ==========")
         train_dataframe = all_dataframe.iloc[train_index, :]
         valid_dataframe = all_dataframe.iloc[valid_index, :]
@@ -231,6 +244,7 @@ def cross_validation(all_dataframe, fold_number=5):
         valid_aucs.append(valid_auc)
         valid_auprs.append(valid_aupr)
         fold += 1
+        wandb.finish()
 
     print("\n\nBest epoch: " + " ".join(best_epochs))
     print("Average AUC of {} fold: {:.4f}".format(fold_number, sum(valid_aucs) / fold_number))
